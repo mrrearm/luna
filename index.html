@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciao Luna! 🐱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 30%, #a8edea 70%, #fed6e3 100%);
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Stelle scintillanti di sfondo */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        .star:nth-child(1) { top: 10%; left: 10%; width: 3px; height: 3px; animation-delay: 0s; }
+        .star:nth-child(2) { top: 20%; right: 15%; width: 2px; height: 2px; animation-delay: 0.5s; }
+        .star:nth-child(3) { bottom: 30%; left: 20%; width: 4px; height: 4px; animation-delay: 1s; }
+        .star:nth-child(4) { bottom: 40%; right: 25%; width: 3px; height: 3px; animation-delay: 1.5s; }
+        .star:nth-child(5) { top: 50%; left: 5%; width: 2px; height: 2px; animation-delay: 0.3s; }
+        .star:nth-child(6) { top: 70%; right: 10%; width: 3px; height: 3px; animation-delay: 0.8s; }
+        .star:nth-child(7) { top: 15%; left: 50%; width: 2px; height: 2px; animation-delay: 1.2s; }
+        .star:nth-child(8) { bottom: 60%; right: 40%; width: 3px; height: 3px; animation-delay: 0.7s; }
+        .star:nth-child(9) { top: 80%; left: 30%; width: 2px; height: 2px; animation-delay: 1.8s; }
+        .star:nth-child(10) { top: 60%; right: 60%; width: 4px; height: 4px; animation-delay: 0.2s; }
+
+        /* Nuvolette fluttuanti di sfondo */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50px;
+            animation: cloudFloat 15s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50px;
+        }
+
+        .cloud1 {
+            width: 80px;
+            height: 30px;
+            top: 20%;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .cloud1::before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 10px;
+        }
+
+        .cloud1::after {
+            width: 50px;
+            height: 35px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud2 {
+            width: 60px;
+            height: 25px;
+            top: 60%;
+            right: -80px;
+            animation-delay: -7s;
+        }
+
+        .cloud2::before {
+            width: 30px;
+            height: 30px;
+            top: -15px;
+            left: 5px;
+        }
+
+        .cloud2::after {
+            width: 35px;
+            height: 28px;
+            top: -12px;
+            right: 5px;
+        }
+
+        @keyframes cloudFloat {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(calc(100vw + 100px)); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Animazione per le zampette che camminano */
+        .walking-paws {
+            position: absolute;
+            bottom: -50px; /* Inizialmente sotto lo schermo */
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            animation: movePaws 10s linear infinite;
+            opacity: 0; /* Inizialmente invisibili */
+            animation-delay: 5s; /* Ritardo per farle apparire dopo un po' */
+            animation-fill-mode: forwards;
+        }
+
+        .paw-step {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            animation: pawAppear 2s ease-in-out infinite alternate;
+        }
+
+        .paw-step:nth-child(2) { animation-delay: 0.5s; }
+        .paw-step:nth-child(3) { animation-delay: 1s; }
+        .paw-step:nth-child(4) { animation-delay: 1.5s; }
+
+        @keyframes pawAppear {
+            0% { opacity: 0; transform: translateY(20px); }
+            50% { opacity: 1; transform: translateY(0px); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        @keyframes movePaws {
+            0% { bottom: -50px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { bottom: 100%; opacity: 0; }
+        }
+
+
+        .container {
+            text-align: center;
+            color: #333;
+            position: relative;
+            z-index: 10;
+            padding-top: 2rem;
+        }
+
+        .greeting {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+            animation: bounce 2s ease-in-out infinite;
+            color: #ff6b9d;
+        }
+
+        .name {
+            font-size: 4rem;
+            color: #c44569;
+            text-shadow: 3px 3px 6px rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            color: #833471;
+        }
+
+        /* Gattino carino migliorato */
+        .kitten-container {
+            position: relative;
+            margin-top: 8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .kitten {
+            width: 250px;
+            height: 250px;
+            animation: float 3s ease-in-out infinite;
+            z-index: 5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(255, 154, 158, 0.4), 0 0 20px rgba(255, 107, 157, 0.3);
+            border: 5px solid transparent;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef, #a8edea);
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        .kitten::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #ff6b9d, #c44569, #ff9a9e, #fecfef);
+            border-radius: 50%;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .kitten:hover {
+            transform: scale(1.15);
+            box-shadow: 0 25px 50px rgba(255, 154, 158, 0.5), 0 0 30px rgba(255, 107, 157, 0.4);
+        }
+
+        .kitten:active {
+            transform: scale(1.05);
+        }
+
+        .kitten img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Nuvoletta del saluto */
+        .speech-bubble {
+            position: absolute;
+            left: 100%; /* Posizionata alla destra del contenitore del gattino */
+            margin-left: 20px; /* Spazio tra gattino e nuvoletta */
+            top: 10px; /* Posizione verticale sopra la gattina */
+            background: white;
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: bubbleFloat 2s ease-in-out infinite;
+            min-width: 200px;
+            text-align: center;
+            z-index: 15;
+            white-space: nowrap; /* Evita che il testo vada a capo */
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -15px; /* Punta verso la gattina */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 15px solid white;
+        }
+
+        /* Cuoricini fluttuanti */
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            color: #ff6b9d;
+            animation: heartFloat 3s ease-out forwards;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.2) rotate(72deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8) rotate(360deg) translateY(-200px);
+            }
+        }
+
+        /* Effetto pulsante per il click */
+        .kitten.clicked {
+            animation: pulse 0.3s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Frasi carine per Luna */
+        .cute-messages {
+            margin-top: 3rem;
+            text-align: center;
+            color: #833471;
+        }
+
+        .cute-message {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.5);
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cute-message:nth-child(1) { animation-delay: 0.5s; }
+        .cute-message:nth-child(2) { animation-delay: 1s; }
+        .cute-message:nth-child(3) { animation-delay: 1.5s; }
+        .cute-message:nth-child(4) { animation-delay: 2s; }
+        .cute-message:nth-child(5) { animation-delay: 2.5s; }
+        .cute-message:nth-child(6) { animation-delay: 3s; }
+
+        /* Particelle a forma di cuore permanenti */
+        .heart-particle {
+            position: absolute;
+            color: #ff9a9e;
+            font-size: 20px;
+            animation: heartSparkle 4s linear infinite;
+        }
+
+        .heart-particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .heart-particle:nth-child(2) { top: 30%; right: 15%; animation-delay: 0.5s; }
+        .heart-particle:nth-child(3) { bottom: 25%; left: 20%; animation-delay: 1s; }
+        .heart-particle:nth-child(4) { bottom: 35%; right: 25%; animation-delay: 1.5s; }
+        .heart-particle:nth-child(5) { top: 40%; left: 80%; animation-delay: 0.3s; }
+        .heart-particle:nth-child(6) { bottom: 50%; right: 70%; animation-delay: 0.8s; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(255,255,255,0.8), 0 0 20px #c44569; }
+            to { text-shadow: 3px 3px 6px rgba(255,255,255,0.8), 0 0 30px #c44569, 0 0 40px #c44569; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes bubbleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes heartSparkle {
+            0% {
+                transform: translateY(0px) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-100px) scale(1) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px) scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .speech-bubble {
+                left: 100%;
+                margin-left: 10px;
+                font-size: 1.2rem;
+                min-width: 200px;
+            }
+            .kitten {
+                width: 220px;
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .greeting { font-size: 2.5rem; }
+            .name { font-size: 3.5rem; }
+            .message {
+                font-size: 1.3rem;
+                padding: 0 20px;
+            }
+            .kitten {
+                width: 180px;
+                height: 180px;
+            }
+            .speech-bubble {
+                left: 100%;
+                margin-left: 10px;
+                top: -60px;
+                font-size: 1.1rem;
+                min-width: 170px;
+                padding: 15px 20px;
+            }
+            .cute-message {
+                font-size: 1.2rem;
+                padding: 0 15px;
+                margin: 0.8rem 0;
+            }
+            .container {
+                padding-top: 1.5rem;
+            }
+            .kitten-container {
+                margin-top: 6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .greeting { font-size: 2rem; }
+            .name { font-size: 2.8rem; }
+            .message {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            .kitten {
+                width: 150px;
+                height: 150px;
+            }
+            .speech-bubble {
+                left: 100%;
+                margin-left: 5px; /* Ridotto per schermi piccoli */
+                top: -50px;
+                font-size: 1rem;
+                min-width: 140px;
+                padding: 12px 18px;
+            }
+            .cute-message {
+                font-size: 1.1rem;
+                padding: 0 10px;
+                margin: 0.7rem 0;
+            }
+            .kitten-container {
+                margin-top: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+
+    <div class="walking-paws">
+        <div class="paw-step"></div>
+        <div class="paw-step"></div>
+        <div class="paw-step"></div>
+        <div class="paw-step"></div>
+    </div>
+
+    <div class="container">
+        <div class="greeting">Ciao</div>
+        <div class="name">Luna!</div>
+        <div class="message">Sei una gattina davvero meravigliosa! 🌟</div>
+    </div>
+
+    <div class="kitten-container">
+        <div class="kitten" id="kitten">
+            <div class="speech-bubble" id="timeGreeting">
+                </div>
+            <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3e%3cdefs%3e%3cradialGradient id='whiteGrad' cx='50%25' cy='40%25'%3e%3cstop offset='0%25' style='stop-color:%23ffffff'/%3e%3cstop offset='50%25' style='stop-color:%23f8f9fa'/%3e%3cstop offset='100%25' style='stop-color:%23e9ecef'/%3e%3c/radialGradient%3e%3cradialGradient id='eyeGrad' cx='50%25' cy='30%25'%3e%3cstop offset='0%25' style='stop-color:%234a90e2'/%3e%3cstop offset='100%25' style='stop-color:%23357abd'/%3e%3c/radialGradient%3e%3cradialGradient id='noseGrad' cx='50%25' cy='30%25'%3e%3cstop offset='0%25' style='stop-color:%23ffb3ba'/%3e%3cstop offset='100%25' style='stop-color:%23ff9aa2'/%3e%3c/radialGradient%3e%3c/defs%3e%3c!-- Corpo principale --%3e%3cellipse cx='200' cy='200' rx='120' ry='100' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3c!-- Testa --%3e%3cellipse cx='200' cy='120' rx='80' ry='70' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3c!-- Orecchie triangolari --%3e%3cpath d='M140 80 L160 40 L180 80 Z' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3cpath d='M220 80 L240 40 L260 80 Z' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3c!-- Interno orecchie --%3e%3cpath d='M148 75 L160 50 L172 75 Z' fill='%23ffb3ba' opacity='0.6'/%3e%3cpath d='M228 75 L240 50 L252 75 Z' fill='%23ffb3ba' opacity='0.6'/%3e%3c!-- Occhi azzurri --%3e%3cellipse cx='175' cy='110' rx='15' ry='18' fill='url(%23eyeGrad)' stroke='%23357abd' stroke-width='2'/%3e%3cellipse cx='225' cy='110' rx='15' ry='18' fill='url(%23eyeGrad)' stroke='%23357abd' stroke-width='2'/%3e%3c!-- Riflessi negli occhi --%3e%3cellipse cx='172' cy='105' rx='5' ry='6' fill='white' opacity='0.9'/%3e%3cellipse cx='222' cy='105' rx='5' ry='6' fill='white' opacity='0.9'/%3e%3cellipse cx='177' cy='107' rx='2' ry='3' fill='white' opacity='0.7'/%3e%3cellipse cx='227' cy='107' rx='2' ry='3' fill='white' opacity='0.7'/%3e%3c!-- Pupille --%3e%3cellipse cx='175' cy='112' rx='3' ry='4' fill='%23000'/%3e%3cellipse cx='225' cy='112' rx='3' ry='4' fill='%23000'/%3e%3c!-- Nasino rosa --%3e%3cpath d='M195 125 L200 135 L205 125 Z' fill='url(%23noseGrad)' stroke='%23ff8a95' stroke-width='1'/%3e%3c!-- Boccuccia --%3e%3cpath d='M200 135 Q190 145 180 140' stroke='%23ff8a95' stroke-width='2' fill='none' stroke-linecap='round'/%3e%3cpath d='M200 135 Q210 145 220 140' stroke='%23ff8a95' stroke-width='2' fill='none' stroke-linecap='round'/%3e%3c!-- Baffi --%3e%3cpath d='M120 125 Q140 120 160 125' stroke='%23ccc' stroke-width='2' fill='none'/%3e%3cpath d='M120 135 Q140 130 160 135' stroke='%23ccc' stroke-width='2' fill='none'/%3e%3cpath d='M120 145 Q140 140 160 145' stroke='%23ccc' stroke-width='2' fill='none'/%3e%3cpath d='M240 125 Q260 120 280 125' stroke='%23ccc' stroke-width='2' fill='none'/%3e%3cpath d='M240 135 Q260 130 280 135' stroke='%23ccc' stroke-width='2' fill='none'/%3e%3cpath d='M240 145 Q260 140 280 145' stroke='%23ccc' stroke-width='2' fill='none'/%3e%3c!-- Guancine rosa --%3e%3cellipse cx='140' cy='125' rx='12' ry='8' fill='%23ffb3ba' opacity='0.4'/%3e%3cellipse cx='260' cy='125' rx='12' ry='8' fill='%23ffb3ba' opacity='0.4'/%3e%3c!-- Codina attaccata --%3e%3cpath d='M120 250 Q90 220 85 180 Q80 140 95 110 Q110 120 115 160 Q120 200 130 240' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3c!-- Zampette --%3e%3cellipse cx='160' cy='280' rx='15' ry='25' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3cellipse cx='200' cy='285' rx='15' ry='25' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3cellipse cx='240' cy='280' rx='15' ry='25' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3cellipse cx='280' cy='275' rx='15' ry='25' fill='url(%23whiteGrad)' stroke='%23ddd' stroke-width='2'/%3e%3c!-- Cuscinetti delle zampe --%3e%3cellipse cx='160' cy='295' rx='8' ry='5' fill='%23ffb3ba' opacity='0.7'/%3e%3cellipse cx='200' cy='300' rx='8' ry='5' fill='%23ffb3ba' opacity='0.7'/%3e%3cellipse cx='240' cy='295' rx='8' ry='5' fill='%23ffb3ba' opacity='0.7'/%3e%3cellipse cx='280' cy='290' rx='8' ry='5' fill='%23ffb3ba' opacity='0.7'/%3e%3c!-- Animazione leggera --%3e%3canimateTransform attributeName='transform' type='rotate' values='0 200 200;1 200 200;-1 200 200;0 200 200' dur='4s' repeatCount='indefinite'/%3e%3c/svg%3e" alt="Luna la gattina bianca bellissima" />
+        </div>
+    </div>
+
+    <div class="cute-messages">
+        <div class="cute-message">💕 Sei la gattina più dolce e pucciosa del mondo, Luna! 💕</div>
+        <div class="cute-message">🌙 Come la luna nel cielo, illumini ogni momento con la tua bellezza 🌙</div>
+        <div class="cute-message">🐾 Le tue zampette morbide portano gioia ovunque tu vada 🐾</div>
+        <div class="cute-message">😻 Il tuo musetto è così carino che fa sciogliere il cuore 😻</div>
+        <div class="cute-message">🌺 Sei delicata come un fiore e dolce come il miele 🌺</div>
+        <div class="cute-message">💖 Ti voglio bene mia piccola Luna stellata! 💖</div>
+    </div>
+
+    <div class="heart-particle">💕</div>
+    <div class="heart-particle">💖</div>
+    <div class="heart-particle">💕</div>
+    <div class="heart-particle">💖</div>
+    <div class="heart-particle">💕</div>
+    <div class="heart-particle">💖</div>
+
+    <script>
+        // Funzione per determinare il saluto in base all'orario
+        function getTimeGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+
+            if (hour >= 5 && hour < 12) {
+                return "Buongiorno Luna! 🌅";
+            } else if (hour >= 12 && hour < 17) {
+                return "Buon pomeriggio Luna! ☀️";
+            } else if (hour >= 17 && hour < 21) {
+                return "Buonasera Luna! 🌆";
+            } else {
+                return "Buonanotte Luna! 🌙";
+            }
+        }
+
+        // Imposta il saluto corretto all'avvio
+        document.getElementById('timeGreeting').textContent = getTimeGreeting();
+
+        // Frasi da mostrare casualmente al click sulla gattina
+        const clickMessages = [
+            "sei bella! ✨",
+            "miao! 😻",
+            "ti voglio bene! 🥰",
+            "sei dolce! 💖",
+            "sei bona! 🔥"
+        ];
+
+        // Funzione per creare il suono del miao
+        function playMeowSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            const oscillator1 = audioContext.createOscillator();
+            const gainNode1 = audioContext.createGain();
+            const filter1 = audioContext.createBiquadFilter();
+
+            oscillator1.connect(filter1);
+            filter1.connect(gainNode1);
+            gainNode1.connect(audioContext.destination);
+
+            oscillator1.type = 'sine';
+            filter1.type = 'lowpass';
+            filter1.frequency.setValueAtTime(1000, audioContext.currentTime);
+
+            oscillator1.frequency.setValueAtTime(600, audioContext.currentTime);
+            oscillator1.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.1);
+            oscillator1.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.4);
+            oscillator1.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.6);
+
+            gainNode1.gain.setValueAtTime(0.4, audioContext.currentTime);
+            gainNode1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+
+            oscillator1.start(audioContext.currentTime);
+            oscillator1.stop(audioContext.currentTime + 0.8);
+
+            setTimeout(() => {
+                const oscillator2 = audioContext.createOscillator();
+                const gainNode2 = audioContext.createGain();
+
+                oscillator2.connect(gainNode2);
+                gainNode2.connect(audioContext.destination);
+
+                oscillator2.type = 'triangle';
+                oscillator2.frequency.setValueAtTime(300, audioContext.currentTime);
+                oscillator2.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.3);
+
+                gainNode2.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+
+                oscillator2.start(audioContext.currentTime);
+                oscillator2.stop(audioContext.currentTime + 0.4);
+            }, 200);
+        }
+
+        // Funzione per creare cuoricini fluttuanti
+        function createFloatingHearts() {
+            const kittenContainer = document.querySelector('.kitten-container');
+            const kitten = document.querySelector('.kitten');
+            const kittenRect = kitten.getBoundingClientRect();
+            const containerRect = kittenContainer.getBoundingClientRect();
+
+            const heartEmojis = ['💕', '💖', '💗', '💝', '💘', '💞', '💓', '💜', '🤍', '❤️'];
+
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+
+                const centerX = kittenRect.left - containerRect.left + kittenRect.width / 2;
+                const centerY = kittenRect.top - containerRect.top + kittenRect.height / 2;
+
+                const angle = (Math.PI * 2 * i) / 20 + Math.random() * 0.5;
+                const distance = 80 + Math.random() * 120;
+                const startX = centerX + Math.cos(angle) * (distance / 4); // Più vicino all'inizio
+                const startY = centerY + Math.sin(angle) * (distance / 4);
+
+                heart.style.left = startX + 'px';
+                heart.style.top = startY + 'px';
+
+                kittenContainer.appendChild(heart);
+
+                const delay = Math.random() * 200;
+                setTimeout(() => {
+                    // Animazione per farli spostare verso l'alto e scomparire
+                    heart.style.transition = 'all 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    heart.style.transform = `translateY(-${distance}px) rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random() * 0.5})`;
+                    heart.style.opacity = 0;
+                }, delay);
+
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        kittenContainer.removeChild(heart);
+                    }
+                }, 3200 + delay);
+            }
+        }
+
+        // Aggiungi interattività al click sul gattino
+        document.querySelector('.kitten').addEventListener('click', function() {
+            // Animazione del gattino principale
+            this.classList.add('clicked');
+            setTimeout(() => {
+                this.classList.remove('clicked');
+            }, 300);
+
+            // Riproduci il suono del miao
+            try {
+                playMeowSound();
+            } catch (error) {
+                console.log('Errore nella riproduzione audio:', error);
+            }
+
+            // Crea i cuoricini fluttuanti
+            createFloatingHearts();
+
+            // Vibrazione se supportata
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100, 50, 150]);
+            }
+
+            // Cambia temporaneamente il messaggio nella nuvoletta
+            const bubble = document.getElementById('timeGreeting');
+            const originalMessage = getTimeGreeting(); // Ottieni il saluto attuale in base all'orario
+            const randomClickMessage = clickMessages[Math.floor(Math.random() * clickMessages.length)];
+
+            bubble.textContent = randomClickMessage;
+
+            // Ripristina il messaggio originale dopo 2 secondi
+            setTimeout(() => {
+                bubble.textContent = originalMessage;
+            }, 2000);
+        });
+
+        // Effetto di mouseover per far "salutare" il gattino
+        document.querySelector('.kitten').addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.15)';
+        });
+
+        document.querySelector('.kitten').addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+
+        // Inizializza il contesto audio dopo la prima interazione dell'utente
+        let audioInitialized = false;
+        document.addEventListener('click', function() {
+            if (!audioInitialized) {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    audioContext.resume();
+                    audioInitialized = true;
+                } catch (error) {
+                    console.log('Audio context non supportato o errore:', error);
+                }
+            }
+        }, { once: true }); // Aggiunto { once: true } per eseguire l'inizializzazione solo una volta
+    </script>
+</body>
+</html>
